@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Modele{% endblock %}
+
+{% block style %}
+<style>
+  .btn {
+  font-family: "Raleway", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 10px 30px;
+  border-radius: 50px;
+  transition: 0.5s;
+  color: #3498db;
+  border: 2px solid #3498db;
+  }
+  .btn:hover{
+      background-color: black;
+      color: white;
+  }
+</style>
+{% endblock style %}
+
+{% block content %}
+<br> <br> <br> <br> <br>
+<div class="">
+    <div class="row mx-4">
+        <div class="row col-lg-9 mx-auto">
+            <div class="row fs-3 fw-bolder">
+                <h1 class="text-center mx-auto" data-aos="fade-up mt-6">Nos Modèles</h1>
+            </div>
+            <hr>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-4 justify-content-center">
+                {% for modele in modeles %}
+                <div class="col mb-3">
+                    <div class="card">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-center">{{ modele.name }}</h5>
+                            <p class="card-text"></p>
+                            <div class="mt-auto mx-auto">
+                                <a href="{% url 'Modele:detail' modele.pk %}" class="btn">Voir Plus</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

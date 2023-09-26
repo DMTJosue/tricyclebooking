@@ -1,0 +1,55 @@
+{% load static %}
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <div class="logo">
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <a href="{% url 'index' %}"><img src="{% static 'assets/img/space/logo.jpg' %}" alt="" class="img-fluid" style="max-height: 100px;" ></a>
+      </div>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          {% if request.resolver_match.view_name == 'index' %}
+          <li><a class="nav-link scrollto active" href="{% url 'index' %}">Accueil</a></li> {% else %}
+          <li><a class="nav-link scrollto active" href="{% url 'index' %}">Accueil</a></li>{% endif %}
+          <li class="dropdown">
+            <a href="{% url 'Modele:list' %}">
+                <span>Modèle</span> <i class="bi bi-chevron-down"></i>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% for modele in modeles %}
+                    <li>
+                        <a href="{% url 'Modele:detail' modele.pk %}">
+<<<<<<< HEAD
+                          <h5 class="card-title text-center">{{ modele.name }}</h5>
+=======
+                            <h5 class="card-title text-center">{{ modele.name }}</h5>
+>>>>>>> f3129b5 (four commit)
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+          </li>
+        
+          <li>
+            
+            {% if request.resolver_match.view_name == 'tricycle:list' %}
+              <a class="nav-link scrollto" href="{% url 'Tricycleapp:list' %}">Tricycles</a> 
+            {% else %}
+              <a class="nav-link" href="{% url 'Tricycleapp:list' %}">Tricycles</a> 
+            {% endif %}
+          </li>
+          
+          <li><a class="nav-link scrollto" href="{% url 'Tricycleauth:handlelogout' %}">Se déconnecter</a></li>
+    {% if user.is_authenticated %}
+          <li><a class="getstarted scrollto" href="#about">Bienvenu {{ user.last_name }}</a></li>
+        {% else %}
+        <li><a class="nav-link scrollto" href="{% url 'Tricycleauth:handlelogin' %}">Se connecter</a></li>
+        </ul>
+    {% endif%}
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->

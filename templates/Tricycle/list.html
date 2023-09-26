@@ -1,0 +1,54 @@
+{% extends 'base.html' %} {% block title %}Tricycle Liste{% endblock %}{% load static %} 
+{% block style %}
+<style>
+  .btn {
+  font-family: "Raleway", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 10px 30px;
+  border-radius: 50px;
+  transition: 0.5s;
+  color: #3498db;
+  border: 2px solid #3498db;
+  }
+  .btn:hover{
+      background-color: black;
+      color: white;
+  }
+</style>
+{% endblock style %}
+
+{% block content %}
+<br><br><br><br><br> <br>
+<p></p>
+<div class="">
+    <div class="row mx-4">
+        <div class="row col-lg-9 mx-auto">
+            <div class="row fs-3 fw-bolder">
+                <h1 class="text-center mx-auto" data-aos="fade-up mt-6">Choisissez votre perle rare chez nous</h1>
+            </div>
+            <hr>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-4 justify-content-end">
+                {% for tricycle in tricycles %}
+                <div class="mb-3 col d-flex">
+                    <div class="card h-100 px-2 w-100">
+                        <div class="position-relative h-50">
+                            <img src="{% static 'assets/img/'|add:tricycle.image.url %}" class="card-img-top h-100 w-100" alt="...">
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto mx-auto">
+                                <h5 class="card-title">{{ tricycle.name }}</h5>
+                                <a href="{% url 'Tricycleapp:detail' tricycle.pk %}" class="btn">Plus <i class="bi bi-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

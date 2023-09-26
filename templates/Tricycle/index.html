@@ -1,0 +1,278 @@
+
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block style %}
+<style>
+  .btn {
+  font-family: "Raleway", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 10px 30px;
+  border-radius: 50px;
+  transition: 0.5s;
+  color: #3498db;
+  border: 2px solid #3498db;
+  }
+  .btn:hover{
+    background-color: black;
+    color: white;
+  }
+  .carousel {
+    
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+  }
+  h6{
+    font-weight: bold;
+  }
+</style>
+{% endblock style %}
+
+{% block content %}
+
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 pt-5 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center">
+          <h1 data-aos="fade-up">Louer des tricycles</h1>
+          <h2 data-aos="fade-up" data-aos-delay="400">Nous mettons à votre dispositions des cycles à trois roues pour vos activités</h2>
+          <div data-aos="fade-up" data-aos-delay="800">
+            <a href="#portfolio" class="btn-get-started scrollto">Réserver</a>
+          </div>
+        </div>
+        <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left" data-aos-delay="200">
+          
+          <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img class="carousel" src="{% static 'assets/img/space/carousel-1.jpeg' %}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <h6> <strong>Vivez une expérience unique.</strong> </h6>
+                  
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img class="carousel" src="{% static 'assets/img/space/carousel-2.jpeg' %}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <h6><strong>Offrez-vous une bouffée d'air frais.</strong> </h6>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img class="carousel" src="{% static 'assets/img/space/carousel-3.jpeg' %}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <h6> <strong>Laissez-vous porter au rythme de la ville.</strong> </h6>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+          
+        </div>
+        
+
+        </div>
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+
+
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-md-6 col-lg-6 d-flex align-items-stretch mb-5 mb-lg-0">
+            <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
+              <div class="icon"><i class="bx bx-smile"></i></i></div>
+              <h4 class="title"><a href="">Facilité d'utilisation</a></h4>
+              <p class="description">Réservez votre tricycle en quelques clics grâce à notre plateforme conviviale et intuitive.</p>
+            </div>
+          </div>
+        
+          <div class="col-md-6 col-lg-6 d-flex align-items-stretch mb-5 mb-lg-0">
+            <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
+              <div class="icon"><i class="bx bx-check-shield"></i></div>
+              <h4 class="title"><a href="">Fiabilité et disponibilité</a></h4>
+              <p class="description">Notre plateforme de réservation de tricycle garantit une disponibilité 24/7 et une fiabilité sans faille pour des trajets en toute tranquillité.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Services Section -->
+
+    
+
+    
+    <!-- ======= Portfolio Section ======= -->
+    <section id="portfolio" class="portfolio">
+      <div class="container">
+
+        <div class="section-title" data-aos="fade-up">
+          <h2>Nos tricycles</h2>
+          <p>Quoi de plus bon que le confort!</p>
+        </div>
+
+
+        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="400">
+          {% for tricycle in tricycles %}
+            <div class="col-lg-4 col-md-4 portfolio-item filter-app">
+              <div class="portfolio-wrap">
+                <img src="{% static 'assets/img/'|add:tricycle.image.url %}" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <div class="portfolio-links">
+                    <a href="{% static 'assets/img/'|add:tricycle.image.url %}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="{{tricycle.name}}"><i class="bx bx-plus"></i></a>
+                    <a href="{% url 'Tricycleapp:detail' tricycle.pk %}" title="Détails"><i class="bx bx-link"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      
+        <div class="offset-5 col-md-3 mt-2">
+          <a href=" {% url 'Tricycleapp:list' %} " class="btn"> tous les tricycles</a>
+        </div>
+
+      </div>
+    </section><!-- End Portfolio Section -->
+
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container">
+
+        <div class="section-title" data-aos="fade-up">
+          <h2>Contactez Nous</h2>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="contact-about">
+              <h3>Kloboto</h3>
+              <p>Plateforme de réservation de tricycle.</p>
+              <div class="social-links">
+                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
+            <div class="info">
+              <div>
+                <i class="ri-map-pin-line"></i>
+                <p>C 158, 4ème Maison après la Pharmacie Ciné Concorde 09BP 285 Cotonou Bénin</p>
+              </div>
+
+              <div>
+                <i class="ri-mail-send-line"></i>
+                <p>info@tricycle.com</p>
+              </div>
+
+              <div>
+                <i class="ri-phone-line"></i>
+                <p>+229 62 26 77 77</p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-5 col-md-12" data-aos="fade-up" data-aos-delay="300">
+            <form action="{% url 'Tricycleapp:contact'%}" method="post" class="form-group" > {% csrf_token %}
+
+              <div class="form-group">
+                <label for="name"></label>
+                <input 
+                  type="text" 
+                  name="name"
+                  class="form-control"
+                  id="name"
+                  placeholder="Votre Nom"
+                  required
+                >
+              </div>
+            
+              <div class="form-group">  
+                <label for="email"></label>
+                <input
+                  type="email" 
+                  name="email"
+                  class="form-control" 
+                  id="email"
+                  placeholder="Votre Email"
+                  required
+                >
+              </div>
+            
+              <div class="form-group">
+                <label for="subject"></label>
+                <input
+                  type="text"
+                  name="subject"
+                  class="form-control"
+                  id="subject"
+                  placeholder="Objet"
+                  required
+                >
+              </div>
+            
+              <div class="form-group">
+                <label for="message"></label>
+                <textarea
+                  name="message"
+                  class="form-control" 
+                  id="message"
+                  rows="5"
+                  placeholder="Message"
+                  required
+                ></textarea>
+              </div>
+              <br>
+              <div class="text-center">
+                <button class="btn" type="submit">Envoyer</button>
+              </div>
+            
+            </form>
+            
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->
+    
+
+  </main><!-- End #main -->
+
+{% endblock content %}
+
+ 
+
+

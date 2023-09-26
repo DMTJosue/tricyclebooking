@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+  .btn {
+  font-family: "Raleway", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 10px 30px;
+  border-radius: 50px;
+  transition: 0.5s;
+  color: #3498db !important; 
+  border: 2px solid #3498db !important;
+  }
+  .btn:hover{
+    background-color: black;
+    color: white!important;
+  }
+  .champsgras{
+    font-weight: bold;
+  }
+</style>
+{% endblock style %}
+
+{% block content %}
+<form class="needs-validation d-flex justify-content-center align-items-center" enctype="multipart/form-data" novalidate method="post" action="{% url 'Tricycleapp:reservation' %}" onsubmit="return validerFormulaire(event)">
+  {% csrf_token %}
+
+  <div class="container mt-5">
+    <!-- Informations sur la location -->
+    <br><br><br>
+    <div class="mb-4">
+      <h1 class="fs-3 fw-bolder text-center">Vous désirez louer <strong>{{ tricycle.name }}</strong> à <strong >{{ tricycle.price }} </strong>FCFA/H</h1>
+    </div>
+    <hr>
+    <!-- Dates et heures -->
+    <h1 class="fs-3 fw-bolder">Durée</h1>
+    <div class="row mb-4">
+      <div class="col">
+        <label for="start_date" class="form-label">Date de début</label>
+        <input type="date" class="form-control" id="start_date" name="start_date" min="{{ current_date }}" required>
+      </div>
+      <div class="col">
+        <label for="heure_debut" class="form-label">Heure de début</label>
+        <input type="time" id="heure_debut" name="heure_debut" class="form-control" step="60"  >
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col">
+        <label for="end_date" class="form-label">Date de fin</label>
+        <input type="date" class="form-control" id="end_date" name="end_date" required>
+      </div>
+      <div class="col">
+        <label for="heure_fin" class="form-label">Heure de fin</label>
+        <input type="time" id="heure_fin" name="heure_fin" class="form-control">
+      </div>
+      <br>
+      
+    </div>
+    <!-- Mode de Paiement -->
+    <div class="row mb-4">
+      <h1 class="fs-3 fw-bolder">Mode de paiement</h1>
+      <div class="col">
+        <select class="form-select" id="tranche" name="tranche" required>
+          <option value="">Choix...</option>
+          <option value="complet">Complet</option>
+          <option value="par_tranche">Par tranche</option>
+          
+        </select>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <ul class="list-group mb-3">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <h3 data-aos="fade-up">Total : {{nouveau_prix}}</h3>
+            <span id="nouveau_prix"></span>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <ul class="list-group mb-3">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <h3 data-aos="fade-up">A payer : {{ tricycle.nouveau_prix }}</h3>
+            <br>
+            <span id="apayer"></span>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <ul class="list-group mb-3">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <h3 data-aos="fade-up">Reste à payer : {{ tricycle.nouveau_prix }}</h3>
+            <br>
+            <span id="montant_restant"></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    
+
+    <!-- Adresse de facturation -->
+    <div class="mb-4">
+      <h1 class="fs-3 fw-bolder">Adresse</h1>
+      <label for="adress" class="form-label"></label>
+      <input type="text" class="form-control" name="adress" value="adresse" id="adress" placeholder="1234 Main St" required>
+      <div class="invalid-feedback">
+        Entrer votre adresse.
+      </div>
+    </div>
+    <div class="mb-4">
+      <h1 class="fs-3 fw-bolder">Téléphone</h1>
+    
+      <label for="phone" class="form-label"></label>
+    
+      <input 
+        type="tel"
+        name="phone"
+        class="form-control"
+        id="phone"
+        placeholder="66785474"
+        required
+      >
+    
+      <div class="invalid-feedback">
+        Entrer votre numéro de téléphone.
+      </div>
+    
+    </div>
+    
+    
+    <!-- Champs cachés pour stocker les valeurs -->
+
+    <input type="hidden" name="name" value ="{{ tricycle.name }}">
+    <input type="hidden" name="modele" value="{{tricycle.modele }}">
+    <label for="price" class="form-label"></label>
+    <input type="hidden" name="price" value="{{ tricycle.price }}">
+
+
+    <input type="hidden" id="nouveau_prix_input" name="nouveau_prix" value="">
+    <input type="hidden" id="apayer_input" name="apayer" value="">
+    <input type="hidden" id="montant_restant_input" name="montant_restant" value="">
+
+
+
+
+    <!-- Bouton Réserver -->
+    <div class="text-center">
+      <button class="btn" type="submit">Réserver</button>
+    </div>
+  </div>
+
+  
+</form>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Obtenez les éléments du formulaire
+    const startDate = document.getElementById('start_date');
+    const startTime = document.getElementById('heure_debut');
+    const endDate = document.getElementById('end_date');
+    const endTime = document.getElementById('heure_fin');
+    const paymentMethod = document.getElementById('tranche');
+    const nouveauPrix = document.getElementById('nouveau_prix');
+    const apayer = document.getElementById('apayer');
+    const montantRestant = document.getElementById('montant_restant');
+    let debounceTimer;
+
+    // Récupérez la date et l'heure actuelles
+    const now = new Date();
+    const currentDate = now.toISOString().split('T')[0];
+    const currentTime = now.toTimeString().split(' ')[0];
+
+    // Appliquez les valeurs par défaut à la date et l'heure de début
+    startDate.value = currentDate;
+    startTime.value = currentTime;
+    
+
+    // Empêchez l'utilisateur de choisir une date inférieure à aujourd'hui
+    startDate.min = currentDate;
+    
+
+    // Ajoutez un écouteur d'événements pour les changements de date et d'heure
+    startDate.addEventListener('change', updateEndDateMin);
+    startTime.addEventListener('change', updateEndDateMin);
+
+    endDate.addEventListener('change', validateDates);
+    endTime.addEventListener('change', validateDates);
+
+    paymentMethod.addEventListener('change', handlePaymentMethod);
+
+    function updateEndDateMin() {
+        endDate.min = startDate.value;
+        validateDates();
+    }
+
+    function validateDates() {
+      const startDateTime = new Date(`${startDate.value}T${startTime.value}`);
+      const endDateTime = new Date(`${endDate.value}T${endTime.value}`);
+
+      if (endDateTime <= startDateTime) {
+          alert("La date/heure de fin doit être supérieure à la date/heure de début.");
+          return;
+      }
+
+      if (paymentMethod.value) {
+          handlePaymentMethod();
+      }
+    }
+
+    function handlePaymentMethod() {
+      const startDateTime = new Date(`${startDate.value}T${startTime.value}`);
+      const endDateTime = new Date(`${endDate.value}T${endTime.value}`);
+      const price = parseFloat('{{ tricycle.price }}');
+
+      const diffInMillis = endDateTime - startDateTime;
+      const diffInHours = diffInMillis / (1000 * 60 * 60);
+
+      const newPrice = Math.ceil(diffInHours * price); // Arrondir à l'entier supérieur
+
+        
+
+      if (paymentMethod.value === 'complet') {
+
+       
+        if (!isNaN(newPrice)) {
+          apayer.innerHTML = `<span class="champsgras">${newPrice} FCFA</span>`;
+          montantRestant.innerHTML =  `<span class="champsgras">${0} FCFA</span>`;
+          nouveauPrix.innerHTML = `<span class="champsgras">${newPrice} FCFA</span>`;
+
+          document.getElementById('nouveau_prix_input').value = newPrice; // Stocker la valeur dans le champ caché
+          document.getElementById('apayer_input').value = newPrice; // Stocker la valeur dans le champ caché
+          document.getElementById('montant_restant_input').value = 0; // Stocker la valeur dans le champ caché
+
+        } else {
+          nouveauPrix.innerHTML =`<span class="champsgras">Choisissez votre durée</span>`;
+          document.getElementById('nouveau_prix_input').value = ''; // Réinitialiser la valeur du champ caché en cas d'erreur
+          document.getElementById('apayer_input').value = ''; // Réinitialiser la valeur du champ caché en cas d'erreur
+          document.getElementById('montant_restant_input').value = ''; // Réinitialiser la valeur du champ caché en cas d'erreur
+        }
+          
+        
+        
+      } else if (paymentMethod.value === 'par_tranche') {
+
+        if (!isNaN(newPrice)) {
+          const inputMontant = document.createElement('input');
+          inputMontant.type = 'number';
+          inputMontant.step = '100';
+          inputMontant.min = '0';
+          inputMontant.max = newPrice;
+          inputMontant.addEventListener('input', function() {
+
+            let timer;
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+              const montant = parseFloat(inputMontant.value);
+                if (montant >= 0 && montant <= newPrice) {
+                  apayer.innerHTML =`<span class="champsgras">${ montant} FCFA</span>`;
+                  montantRestant.innerHTML= `<span class="champsgras">${newPrice - montant} FCFA</span>`;
+                  nouveauPrix.innerHTML = `<span class="champsgras">${newPrice} FCFA</span>`  ;
+
+                  document.getElementById('nouveau_prix_input').value = newPrice; // Stocker la valeur dans le champ caché
+                  document.getElementById('apayer_input').value = montant; // Stocker la valeur dans le champ caché
+                  document.getElementById('montant_restant_input').value = ` ${newPrice - montant}`; // Stocker la valeur dans le champ caché
+                }
+            }, 3000);
+          });
+          apayer.innerHTML = ' ';
+          apayer.appendChild(inputMontant);
+        } else {
+          nouveauPrix.innerHTML = 'Choisissez votre durée';
+          nouveauPrix.innerHTML = 'Choisissez votre durée';
+          document.getElementById('nouveau_prix_input').value = ''; // Réinitialiser la valeur du champ caché en cas d'erreur
+          document.getElementById('apayer_input').value = ''; // Réinitialiser la valeur du champ caché en cas d'erreur
+          document.getElementById('montant_restant_input').value = ''; // Réinitialiser la valeur du champ caché en cas d'erreur
+        }
+
+        
+      }
+    }
+
+    
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+      // Vérifier si tous les champs sont remplis
+      const inputs = this.querySelectorAll('input, select');
+      let allFilled = true;
+      inputs.forEach(input => {
+        if (!input.value) {
+          allFilled = false;
+        }
+      });
+      /*
+      if (!allFilled) {
+        alert("Veuillez remplir tous les champs.");
+        event.preventDefault(); // Empêche l'envoi du formulaire
+      }*/
+    });
+  });
+</script>
+
+
+{% endblock content %}

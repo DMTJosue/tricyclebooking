@@ -1,0 +1,74 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block title %} Réinitialiser le mot de passe{% endblock title %}
+
+
+{% block style %}
+<style>
+    .btn {
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 10px 30px;
+    border-radius: 50px;
+    transition: 0.5s;
+    color: #3498db;
+    border: 2px solid #3498db;
+    }
+    .btn:hover{
+        background-color: black;
+        color: white;
+    }
+</style>   
+{% endblock style %}
+    
+
+{% block content %}
+<section id="contact" class="contact">
+    <div class="container">
+
+      <div class="section-title" data-aos="fade-up">
+
+<div class="row">
+<div class="col-md-2"></div>
+<div class="col-md-4">
+<br>
+<br>
+
+<h1 data-aos="fade-up mt-6">Réinitialiser votre mot de passe</h1>
+<div class="container" data-aos="fade-up" data-aos-delay="400"></div>
+{% for message in messages %}
+    <div class="alert alert-{{message.tags}} dismissible fade show" role="alert">
+        <strong></strong>{{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endfor %}
+    <form action="{% url 'Tricycleauth:request-reset-email' %}" method="post"> {% csrf_token %}
+        <br>
+       
+        <label for="email">Email</label>
+        <div class="form-group">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Adresse e-mail" required>
+        </div>
+      
+        <br>
+        <button type="submit" class="btn">Réinitialiser</button>
+        <hr>
+         <a href="{% url 'Tricycleauth:handlelogin' %}">Se retourner ?</a>
+        <br>
+
+        <br>
+        
+        
+    </form>
+</div>
+</div>
+</div>
+</section>
+{% endblock content %}
+    
+    

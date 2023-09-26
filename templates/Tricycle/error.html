@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Voiture Modifier{% endblock %}
+
+{% block content %}
+<br><br><br><br><br><br><br><br><br><br> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="container mt-5">
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <!-- Afficher les erreurs du formulaire -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>Erreur lors de la soumission du formulaire :</strong>
+                            <ul>
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    <!-- Afficher les erreurs de chaque champ -->
+                    {% for field in form %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <ul class="alert alert-danger">
+                                    {% for error in field.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary">Réserver</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

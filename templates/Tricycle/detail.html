@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Tricycle Detail{% endblock %}
+{% block style %}
+<style>
+  .btn {
+        font-family: "Raleway", sans-serif;
+        font-weight: 500;
+        font-size: 16px;
+        letter-spacing: 1px;
+        display: inline-block;
+        padding: 10px 30px;
+        border-radius: 50px;
+        transition: 0.5s;
+        color: #3498db;
+        border: 2px solid #3498db;
+  }
+    .btn:hover{
+        background-color: black;
+        color: white;
+    }
+    .btn i.bi-cart-check-fill { 
+        color: #3498db !important; 
+    }
+    
+    .image-container {
+        position: relative;
+    }
+
+    .hovered::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 1;
+        transition: opacity 0.3s ease;
+    }
+
+    .portfolio-info {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .hovered .portfolio-info {
+        opacity: 1;
+    }
+    .price {
+        font-size: 18px;
+        width: 150px;
+        font-weight: bold;
+        
+        
+    }
+    .pushed-right {
+        margin-left: 10px;
+    }
+
+</style>
+{% endblock style %}
+
+{% load static %}
+{% block content %}
+<br><br><br><br><br><br><br><br><br>
+<div class="row mx-3">
+    
+    <div class="row-cols-1 offset-md-1 card shadow-custom border-0 col-md-9 mx-auto">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-4 portfolio-item filter-app">
+                <div class="portfolio-wrap">
+                    <div class="image-container">
+                        <img src="{% static 'assets/img/'|add:tricycle.image.url %}" class="img-fluid" alt="">
+                        <div class="portfolio-info">
+                            <div class="portfolio-links">
+                                <a href="{% static 'assets/img/'|add:tricycle.image.url %}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="{{tricycle.name}}">
+                                    <i class="bx bx-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-cols-1 col-md-6 col-xxl-4 col-lg-5 col-xl-5">
+                <div class="top">
+                    <h2 class="mt-4 font-weight-bold text-grey"> {{ tricycle.name }} {{ tricycle.marque }} </h2>
+                    <div>
+                        <span class="font-weight-bold text-grey">  <strong>Poids:</strong> {{ tricycle.weight }}</span> 
+                    </div>
+                    
+                </div>
+                <div class="mt-3 form-text">Découvrez une nouvelle façon de vous déplacer en louant notre tricycle confortable et pratique. Réservez dès maintenant et profitez d'une expérience de conduite unique !</div>
+                <hr>
+                <div class="mb-4">
+                    <form class="rounded-pill shadow">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <span class="input-group add-to-cart shadow-custom">
+                                    <div class="input-group-prepend">
+                                        <h6 class="price pushed-right" data-aos="fade-up">  {{ tricycle.price }} FCFA/H</h6>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="col-auto">
+                                <a href="" class="text-decoration-none" id="cart-button">
+                                    <button class="btn" data-toggle="tooltip" data-placement="top" title="Reserver un essai">
+                                        <i class="bi bi-cart-check-fill text-light"></i>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+    
+</div>
+
+{% endblock content %}
+
+{% block script%}
+<script>
+
+    document.getElementById('cart-button').addEventListener('click', function(e) {
+        e.preventDefault();
+        var tricyclePk = "{{ tricycle.pk }}";
+        var url = "{% url 'Tricycleapp:payement' pk=tricycle.pk %}".replace('tricycle.pk', tricyclePk);
+        window.location.href = url;
+    });
+
+    const imageContainer = document.querySelector('.image-container');
+
+    imageContainer.addEventListener('mouseover', function() {
+        this.classList.add('hovered');
+    });
+
+    imageContainer.addEventListener('mouseout', function() {
+        this.classList.remove('hovered');
+    });
+</script>
+{% endblock script %}
+

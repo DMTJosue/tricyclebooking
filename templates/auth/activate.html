@@ -1,0 +1,5 @@
+{% autoescape off %}
+Hi {{ user.last_name}}
+Veuillez cliquer sur ce lien pour vérifier votre compte
+http://{{ domain }}{% url 'Tricycleauth:activate' uidb64=uid token=token %}
+{% endautoescape %}

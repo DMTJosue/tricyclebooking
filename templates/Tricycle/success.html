@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+  .btn {
+  font-family: "Raleway", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 10px 30px;
+  border-radius: 50px;
+  transition: 0.5s;
+  color: #3498db !important; 
+  border: 2px solid #3498db !important;
+  }
+  .btn:hover{
+      background-color: black;
+      color: white!important;
+  }
+</style>
+{% endblock style %}
+
+{% block content %}
+<br><br><br><br><br><br><br><br><br><br>
+<form class="needs-validation d-flex justify-content-center align-items-center" enctype="multipart/form-data" novalidate method="post" action="{% url 'Tricycleapp:confirmation' %}" >
+  {% csrf_token %}
+  <div class="row justify-content-center">
+    <div class="col-md-5 col-lg-4 order-md-last mx-auto">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-primary"><h1 class="fs-3 fw-bolder">Récapitulatif</h1></span>
+        <hr>
+        <span class="badge bg-primary rounded-pill">1</span>
+      </h4>
+      <ul class="list-group mb-3">
+        <li class="list-group-item d-flex justify-content-between lh-sm">
+          <div>
+            <h6 class="my-0" name="modele">{{ reservation.modele }}</h6>
+            <small class="text-muted" name="name">{{ reservation.name }}</small>
+          </div>
+          <img src="{{ tricycle.image.url }}" alt="" style="max-width: 300px; max-height: 200px;">
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Nous allons vous défalquer </span>
+          <strong name="price" value="{{ reservation.apayer }}">FCFA {{ reservation.apayer }}</strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Vous rester devoir </span>
+          <strong name="price" value="{{ reservation.montant_restant }}">FCFA {{ reservation.montant_restant }}</strong>
+        </li>
+      </ul>
+      <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
+
+      <div class="text-center">
+        <button name="payer" class="btn" type="submit"> Payer</button>
+      </div>
+    </div>
+
+  </div>
+</form>
+
+
+{% endblock content %}
