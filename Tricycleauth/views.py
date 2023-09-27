@@ -72,6 +72,8 @@ def signup(request):
         'token': generate_token.make_token(user)
     })
 
+
+
     email_message = EmailMessage(email_subject,message,settings.EMAIL_HOST_USER,[email],)
     EmailThread(email_message).start()
 
