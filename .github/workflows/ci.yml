@@ -1,0 +1,42 @@
+# Nom du workflow
+name: Continous Integration
+
+# Déclencheurs
+on:
+  # Sur les pushes vers les branches listées  
+  push:
+    branches: 
+      - main 
+      - develop
+    # Sur les pull requests vers ces branches
+  pull_request:
+    branches:
+      - main
+      - develop
+
+# Définition du job de tests        
+jobs:
+  test:
+    # Nom du job
+    name: Run tests
+    # Exécution sur Ubuntu
+    runs-on: ubuntu-latest
+    # Étapes du workflow
+    steps:
+        # Récupère le code source du dépôt
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Installe Python, pip et dépendances  
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install python3-pip
+          pip3 install -r requirements.txt
+      # Génère les fichiers de migration si modèles changés      
+      - name: Run migrations
+        run: python manage.py migrate
+    
+      # Exécute les migrations
+      - name: Run tests
+        run: python manage.py test
