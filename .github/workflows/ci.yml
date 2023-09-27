@@ -54,7 +54,7 @@ jobs:
       - name: Run tests
         run: python manage.py test
 
-      # Déploiement sur Python Anywhere si tests OK
+      # Déploiement sur Python Anywhere si tests bon
       - name: Deploy to Python Anywhere
         if: success() 
           run: pythonanywhere-cli deploy ${{ secrets.PYTHONANYWHERE_USERNAME }} ${{ secrets.PYTHONANYWHERE_API_KEY }}
