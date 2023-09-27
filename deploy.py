@@ -5,6 +5,7 @@ import zipfile
 # Récupération des informations d'authentification
 username = os.environ['PYTHONANYWHERE_USERNAME']   
 token = os.environ['PYTHONANYWHERE_API_KEY']
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 try:
 
