@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 import contextlib
-=======
->>>>>>> f3129b5 (four commit)
 from django.shortcuts import render,HttpResponse,redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.views.generic import View
@@ -61,8 +58,6 @@ def signup(request):
             messages.warning(request,"L'email est déjà utilisé")
             return render(request,'auth/signup.html')
 
-
-<<<<<<< HEAD
     user = User.objects.create_user(username,email,password)
     user.is_active=False
     user.first_name=first_name
@@ -76,45 +71,6 @@ def signup(request):
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': generate_token.make_token(user)
     })
-=======
-        except Exception as identifier:
-            pass
-        
-        user = User.objects.create_user(username,email,password)
-        user.is_active=False
-        user.first_name=first_name
-        user.last_name=last_name
-        user.save()
-        current_site = get_current_site(request)
-        email_subject = "Activer votre compte"
-        message = render_to_string('auth/activate.html',{
-            'user': user,
-            'domain': settings.DOMAIN,
-            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            'token': generate_token.make_token(user)
-        })
-        
-        """
-        
-        #resend
-        resend = Resend(api_key=settings.RESEND_API_KEY)
-        resend.send_email(
-            from_email=settings.EMAIL_HOST_USER,
-            to_email=[email],
-            subject=email_subject,
-            message=message
-        )
-        """
-        email_message = EmailMessage(email_subject,message,settings.EMAIL_HOST_USER,[email],)
-        EmailThread(email_message).start()
-       
-        messages.info(request,"Activer votre compte en cliquant sur le lien dans votre email")
-        return redirect('Tricycleauth:handlelogin')
-
->>>>>>> f3129b5 (four commit)
-
-
-<<<<<<< HEAD
 
     email_message = EmailMessage(email_subject,message,settings.EMAIL_HOST_USER,[email],)
     EmailThread(email_message).start()
@@ -122,8 +78,6 @@ def signup(request):
     messages.info(request,"Activer votre compte en cliquant sur le lien dans votre email")
     return redirect('Tricycleauth:handlelogin')
 
-=======
->>>>>>> f3129b5 (four commit)
 class ActivateAccountView(View):
 
     def get(self, request, uidb64, token):
@@ -183,7 +137,6 @@ class RequestResetEmailView(View):
         else:
             messages.error(request, "Vous n'êtes pas un utilisateur , inscrivez-vous")
 
-<<<<<<< HEAD
         return render(request,'auth/request-reset-email.html')
 
     # TODO Rename this here and in `post`
@@ -203,33 +156,6 @@ class RequestResetEmailView(View):
             settings.EMAIL_HOST_USER,
             [email]
         )
-=======
-            message = render_to_string('auth/reset-user-password.html', {
-                'domain': settings.DOMAIN, 
-                'uid': urlsafe_base64_encode(force_bytes(user[0].pk)),
-                'token': token_generator.make_token(user[0])
-            })
-            """
-            #Resend
-            resend = Resend(api_key=settings.RESEND_API_KEY)
-            resend.send_email(
-                from_email=settings.EMAIL_HOST_USER,
-                to_email=[email],
-                subject=email_subject,
-                message=message
-            )
-            """
-            email_message = EmailMessage(
-                email_subject,
-                message,
-                settings.EMAIL_HOST_USER,
-                [email]
-            )
-
-            EmailThread(email_message).start()
-            
-            messages.info(request,'Nous vous avons un email, suivez les instructions pour réinitialiser votre mot de passe')
->>>>>>> f3129b5 (four commit)
 
         EmailThread(email_message).start()
 
@@ -263,17 +189,7 @@ class SetNewPasswordView(View):
             return render(request,'auth/set-new-password.html',context)
 
         try:
-<<<<<<< HEAD
             return self._extracted_from_post_13(uidb64, password, request)
-=======
-            user_id = str(urlsafe_base64_decode(uidb64), 'utf-8')
-            user = User.objects.get(pk=user_id)
-            user.set_password(password)
-            user.save()
-            messages.success(request,"Mot de passe réinitialiser avec succès veuillez vous connecter avec le nouveau mot de passe")
-            return redirect('Tricycleauth:handlelogin')
-        
->>>>>>> f3129b5 (four commit)
         except DjangoUnicodeDecodeError as identifier:
             messages.error(request,"Quelque chose s'est mal passée")
             return render(request,'auth/set-new-password.html',context)
