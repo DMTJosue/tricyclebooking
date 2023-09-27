@@ -54,15 +54,8 @@ jobs:
       - name: Run tests
         run: python manage.py test
 
-      #installation de pythonanywhere-cli  
-      - name: Download pythonanywhere-cli
-        run: curl -L https://github.com/tigerlilyy/pythonanywhere-cli/releases/latest/download/pythonanywhere-cli-linux -o pythonanywhere-cli
-
-      #rendre exécutable pythonanywhere-cli 
-      - name: Make pythonanywhere-cli executable
-        run: chmod +x pythonanywhere-cli
 
       # Déploiement sur Python Anywhere si tests OK
       - name: Deploy to Python Anywhere
         if: success() 
-        run: ./pythonanywhere-cli deploy ${{ secrets.PYTHONANYWHERE_USERNAME }} ${{ secrets.PYTHONANYWHERE_API_KEY }}
+        run: python deploy.py
