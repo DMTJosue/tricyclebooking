@@ -58,7 +58,6 @@ def signup(request):
             messages.warning(request,"L'email est déjà utilisé")
             return render(request,'auth/signup.html')
 
-
     user = User.objects.create_user(username,email,password)
     user.is_active=False
     user.first_name=first_name
