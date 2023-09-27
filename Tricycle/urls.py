@@ -31,7 +31,15 @@ urlpatterns = [
     path('reservation/', views.ReservationView.as_view(), name='reservation'),
 ]
 
-
+urlpatterns += i18n_patterns(
+    path('i18n/', include('django.conf.urls.i18n')),
+    path('admin/', admin.site.urls),
+    path('', views.TricycleView.as_view(), name='index'),
+    path('Tricycle/',include('Tricycleapp.urls',namespace='tricycle')),
+    path('Tricycleauth/',include('Tricycleauth.urls',namespace='tricycleauth')), 
+    path('Modele/', include('Modele.urls', namespace='modele')),
+    path('reservation/', views.ReservationView.as_view(), name='reservation'),
+)
 
 if settings.DEBUG:
 	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
