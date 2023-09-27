@@ -1,8 +1,7 @@
+import os
 import requests
-import secrets
-username = secrets.PYTHONANYWHERE_USERNAME 
-token = secrets.PYTHONANYWHERE_API_KEY
-
+username = os.environ['PYTHONANYWHERE_USERNAME']
+token = os.environ['PYTHONANYWHERE_API_KEY']
 response = requests.get(
     'https://www.pythonanywhere.com/api/v0/user/{username}/cpu/'.format(
         username=username
