@@ -54,8 +54,7 @@ jobs:
         run: python manage.py test
 
       - name: Deploy to Python Anywhere
-        if: success() 
-        uses: pythonanywhere/github-actions@master
-        with:  
-          username: ${{ env.PYTHONANYWHERE_USERNAME }}
-          api_key: ${{ env.PYTHONANYWHERE_API_KEY }}
+        if: success()
+        run: |
+          pip install pythonanywhere
+          pythonanywhere-cli deploy ${{ secrets.PYTHONANYWHERE_USERNAME }} ${{ secrets.PYTHONANYWHERE_API_KEY }
