@@ -22,10 +22,10 @@ def build():
   subprocess.run("python manage.py collectstatic --noinput", shell=True)
 
 def push_code():
-  subprocess.run(f"git push https://{username}:{token}@github.com/user/repo.git", shell=True)
+  subprocess.run(f"git push https://{username}:{token}@github.com/DMTJosue/tricyclebooking.git", shell=True)
 
 def deploy_to_pythonanywhere():
-  subprocess.run(f"git push https://{username}:{token}@git.pythonanywhere.com/user/repo.git", shell=True)
+  subprocess.run(f"git push https://{username}:{token}@git.pythonanywhere.com/DMTJosue/tricyclebooking.git", shell=True)
   
 def restart_app():
   headers = {"Authorization": f"Token {token}"}
