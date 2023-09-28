@@ -1,49 +1,29 @@
 import os
 import requests
-import zipfile
+import subprocess
 
 # Récupération des informations d'authentification
 username = os.environ['PYTHONANYWHERE_USERNAME']   
 token = os.environ['PYTHONANYWHERE_API_KEY']
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
-try:
+def deploy():
+  build()
+  push_code()
+  deploy_to_pythonanywhere()
+  restart_app()
 
-  # Création du fichier zip
-  zipf = zipfile.ZipFile('project.zip', 'w', zipfile.ZIP_DEFLATED)  
-  zipf.write('deploy.py')     
-  zipf.write('requirements.txt')
-  zipf.close()
+def build():
+  subprocess.run("python manage.py collectstatic --noinput", shell=True)
 
-  if os.path.exists('project.zip'):
+def push_code():
+  subprocess.run(f"git push https://{username}:{token}@github.com/user/repo.git", shell=True)
 
-    # Récupération de l'ID de l'application
-    response = requests.get(
-      f"https://www.pythonanywhere.com/api/v0/user/{username}/apps/", 
-      headers={'Authorization': f'Token {token}'}
-    )
+def deploy_to_pythonanywhere():
+  subprocess.run(f"git push https://{username}:{token}@git.pythonanywhere.com/user/repo.git", shell=True)
 
-    app_id = response.json()[0]['id']
+def restart_app():
+  requests.post(f"https://www.{username}.pythonanywhere.com/api/v0/user/{username}/restart/", headers={"Authorization": f"Token {token}"})
 
-    # Préparation des données de déploiement
-    files = {'directory': open('project.zip', 'rb')}
-
-    # Requête de déploiement
-    response = requests.post(
-      f"https://www.pythonanywhere.com/api/v0/user/{username}/apps/{app_id}/deploy/",  
-      headers={'Authorization': f'Token {token}'},
-      files=files
-    )
-
-    if response.status_code == 201:
-      print("Déploiement réussi!")
-    elif response.status_code == 400:  
-      print("Requête invalide")
-    else:
-      print(f"Erreur {response.status_code}: {response.text}")
-
-  else:
-    print("Erreur de création du zip")
-
-except requests.RequestException as e:
-  print("Erreur réseau: ", e)
+if __name__ == '__main__':
+  deploy()

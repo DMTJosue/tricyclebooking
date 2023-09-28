@@ -49,17 +49,10 @@ jobs:
 
     steps:  
 
-      - name: Display environment variables
-        run: env
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Check secrets
-        run: echo "USERNAME=${secrets.PYTHONANYWHERE_USERNAME}"
-
-      - name: Display deployment message
-        run: echo "Deploying..."
-
-      - name: Deploy to Python Anywhere
-        uses: pythonanywhere/actions/deploy@master
-        with:
-          username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
-          api_key: ${{ secrets.PYTHONANYWHERE_API_KEY }}
+      - name: Build and deploy
+         if: success()
+         run: |
+           python deploy.py
