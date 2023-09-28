@@ -57,4 +57,4 @@ jobs:
         if: success()
         run: |
           pip install pythonanywhere
-          pythonanywhere-cli deploy ${{ secrets.PYTHONANYWHERE_USERNAME }} ${{ secrets.PYTHONANYWHERE_API_KEY }
+          pythonanywhere-cli deploy ${{ secrets.PYTHONANYWHERE_USERNAME }} ${{ secrets.PYTHONANYWHERE_API_KEY }}
