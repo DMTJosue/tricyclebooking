@@ -46,12 +46,20 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
 
-    steps:
+    steps:  
+
+      - name: Display environment variables
+        run: env
+
+      - name: Check secrets
+        run: echo "USERNAME=${secrets.PYTHONANYWHERE_USERNAME}"
+
+      - name: Display deployment message
+        run: echo "Deploying..."
+
       - name: Deploy to Python Anywhere
-        if: success() 
         uses: pythonanywhere/actions/deploy@master
         with:
-          username: ${{ secrets.PYTHONANYWHERE_USERNAME }}  
+          username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
           api_key: ${{ secrets.PYTHONANYWHERE_API_KEY }}
