@@ -57,5 +57,8 @@ jobs:
 
       # Déploiement sur Python Anywhere si tests OK
       - name: Deploy to Python Anywhere
-        if: success() 
-        run: python deploy.py
+      if: success()
+      uses: pythonanywhere/actions/deploy@master
+      with:
+        username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
+        api_key: ${{ secrets.PYTHONANYWHERE_API_KEY }}
