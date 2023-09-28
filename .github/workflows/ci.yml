@@ -27,35 +27,35 @@ jobs:
 
     steps:
 
-      # Checkout du code
+      
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Installation des dépendances
+      
       - name: Install dependencies
         run: |
           sudo apt-get update 
           sudo apt-get install python3-pip
           pip3 install -r requirements.txt
 
-      # Création de l'environnement virtuel    
+          
       - name: Create virtualenv
         run: python3 -m venv venv  
 
-      # Activation de l'environnement virtuel
+      
       - name: Activate virtualenv
         run: . venv/bin/activate
 
-      # Exécution des migrations
+      
       - name: Run migrations
         run: python manage.py migrate
 
-      # Lancement des tests
+      
       - name: Run tests
         run: python manage.py test
 
 
-      # Déploiement sur Python Anywhere si tests OK
+      
       - name: Deploy to Python Anywhere
       if: success()
       uses: pythonanywhere/actions/deploy@master
