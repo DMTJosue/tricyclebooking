@@ -43,16 +43,23 @@ jobs:
       - name: Run tests
         run: python manage.py test
 
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign reviewer 
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }} 
+        run: |
+          curl --request POST --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data '{"assignees":["reviewer"]}' https://api.github.com/repos/${{ DMTJosue.tricyclebooking }}/issues/${{ env.PR_NUMBER }}/assignees
+
   deploy:
-    needs: test
+   if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
-    steps:  
-
+    steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Build and deploy
-        if: success()  
         run: |
           python deploy.py
