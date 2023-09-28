@@ -46,6 +46,7 @@
         <label for="heure_debut" class="form-label">Heure de début</label>
         <input type="time" id="heure_debut" name="heure_debut" class="form-control" step="60"  >
       </div>
+      <div class="col"></div>
     </div>
     <div class="row mb-4">
       <div class="col">
@@ -58,6 +59,7 @@
       </div>
       <br>
       
+      <dic class="col"></dic>
     </div>
     <!-- Mode de Paiement -->
     <div class="row mb-4">
@@ -70,6 +72,8 @@
           
         </select>
       </div>
+      <div class="col"></div>
+      <div class="col"></div>
     </div>
     <div class="row mb-4">
       <div class="col-md-4">
@@ -103,16 +107,21 @@
     
 
     <!-- Adresse de facturation -->
-    <div class="mb-4">
-      <h1 class="fs-3 fw-bolder">Adresse</h1>
-      <label for="adress" class="form-label"></label>
-      <input type="text" class="form-control" name="adress" value="adresse" id="adress" placeholder="1234 Main St" required>
-      <div class="invalid-feedback">
-        Entrer votre adresse.
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="fs-3 fw-bolder">Adresse</h1>
+        <label for="adress" class="form-label"></label>
+        <input type="text" class="form-control" name="adress" value="adresse" id="adress" placeholder="1234 Main St" required>
+        <div class="invalid-feedback">
+          Entrer votre adresse.
+        </div>
       </div>
+      
+      
     </div>
-    <div class="mb-4">
-      <h1 class="fs-3 fw-bolder">Téléphone</h1>
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="fs-3 fw-bolder">Téléphone</h1>
     
       <label for="phone" class="form-label"></label>
     
@@ -127,6 +136,7 @@
     
       <div class="invalid-feedback">
         Entrer votre numéro de téléphone.
+      </div>
       </div>
     
     </div>
@@ -158,6 +168,10 @@
 
 
 
+
+
+{% endblock content %}
+{% block script%}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Obtenez les éléments du formulaire
@@ -305,5 +319,4 @@
   });
 </script>
 
-
-{% endblock content %}
+{% endblock script %}
