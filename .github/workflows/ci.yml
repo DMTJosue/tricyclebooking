@@ -51,7 +51,10 @@ jobs:
 
     steps:
       - name: Run tests
-        run: python manage.py test
+        run: |
+          cd /home/runner/work/tricyclebooking
+          python manage.py test
+
 
       - name: Deploy to Python Anywhere
         if: success()
