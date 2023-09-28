@@ -55,7 +55,7 @@ jobs:
 
       - name: Deploy to Python Anywhere
         if: success() 
-        uses: pythonanywhere/actions/deploy@master
+        uses: pythonanywhere/github-actions@master
         with:  
           username: ${{ env.PYTHONANYWHERE_USERNAME }}
           api_key: ${{ env.PYTHONANYWHERE_API_KEY }}
