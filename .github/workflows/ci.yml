@@ -49,7 +49,7 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          curl --request POST --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data '{"assignees":["reviewer"]}' https://api.github.com/repos/${{ DMTJosue.repository }}/issues/${{ env.PR_NUMBER }}/assignees
+          curl --request POST --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data '{"assignees":["reviewer"]}' https://api.github.com/repos/${{ github.repository }}/issues/${{ env.PR_NUMBER }}/assignees
 
   deploy:
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
