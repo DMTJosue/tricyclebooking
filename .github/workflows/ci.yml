@@ -1,4 +1,4 @@
-name: Continous Integration
+name: Continuous Integration
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
       - develop
   pull_request:
-    branches:
+    branches: 
       - main
       - develop
 
@@ -20,19 +20,18 @@ jobs:
   test:
     name: Run tests
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout code 
         uses: actions/checkout@v3
 
-      - name: Install dependencies 
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install python3-pip
           pip3 install -r requirements.txt
 
       - name: Create virtualenv
-        run: python3 -m venv venv
+        run: python3 -m venv venv  
 
       - name: Activate virtualenv
         run: . venv/bin/activate
@@ -46,20 +45,18 @@ jobs:
   assign:
     runs-on: ubuntu-latest
     steps:
-      - name: Assign reviewer 
+      - name: Assign reviewer
         env:
-          PR_NUMBER: ${{ github.event.pull_request.number }} 
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          curl --request POST --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data '{"assignees":["reviewer"]}' https://api.github.com/repos/${{ DMTJosue.tricyclebooking }}/issues/${{ env.PR_NUMBER }}/assignees
+          curl --request POST --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data '{"assignees":["reviewer"]}' https://api.github.com/repos/${{ DMTJosue.repository }}/issues/${{ env.PR_NUMBER }}/assignees
 
   deploy:
-   if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Build and deploy
+      - name: Build and deploy 
         run: |
           python deploy.py
