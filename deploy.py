@@ -7,6 +7,8 @@ username = os.environ['PYTHONANYWHERE_USERNAME']
 token = os.environ['PYTHONANYWHERE_API_KEY']
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
+subprocess.run("source myvenv/bin/activate", shell=True)
+
 def deploy():
   build()
   push_code()
@@ -23,7 +25,7 @@ def deploy_to_pythonanywhere():
   subprocess.run(f"git push https://{username}:{token}@git.pythonanywhere.com/user/repo.git", shell=True)
 
 def restart_app():
-  requests.post(f"https://www.{username}.pythonanywhere.com/api/v0/user/{username}/restart/", headers={"Authorization": f"Token {token}"})
+  requests.post(f"https://{username}.pythonanywhere.com/api/v0/user/{username}/restart/", headers={"Authorization": f"Token {token}"})
 
 if __name__ == '__main__':
   deploy()
