@@ -1,7 +1,5 @@
-# Nom du workflow
 name: Continous Integration
 
-# Déclencheurs
 on:
   push:
     branches:  
@@ -12,53 +10,48 @@ on:
       - main
       - develop
 
-# Définition des variables d'environnement
 env:
   PYTHONANYWHERE_USERNAME: ${{ secrets.PYTHONANYWHERE_USERNAME }}
   PYTHONANYWHERE_API_KEY: ${{ secrets.PYTHONANYWHERE_API_KEY }}
   EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
 
-
-# Définition du job de tests        
 jobs:
+
   test:
     name: Run tests
     runs-on: ubuntu-latest
 
     steps:
-
-      
       - name: Checkout code
         uses: actions/checkout@v3
 
-      
-      - name: Install dependencies
+      - name: Install dependencies 
         run: |
-          sudo apt-get update 
+          sudo apt-get update
           sudo apt-get install python3-pip
           pip3 install -r requirements.txt
 
-          
       - name: Create virtualenv
-        run: python3 -m venv venv  
+        run: python3 -m venv venv
 
-      
       - name: Activate virtualenv
         run: . venv/bin/activate
 
-      
       - name: Run migrations
         run: python manage.py migrate
 
-      
       - name: Run tests
         run: python manage.py test
 
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
 
-      
+    steps:
       - name: Deploy to Python Anywhere
-      if: success()
-      uses: pythonanywhere/actions/deploy@master
-      with:
-        username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
-        api_key: ${{ secrets.PYTHONANYWHERE_API_KEY }}
+        if: success() 
+        uses: pythonanywhere/actions/deploy@master
+        with:
+          username: ${{ secrets.PYTHONANYWHERE_USERNAME }}  
+          api_key: ${{ secrets.PYTHONANYWHERE_API_KEY }}
