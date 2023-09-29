@@ -22,7 +22,7 @@ jobs:
     strategy :
       max-parallel: 4
       matrix:
-        python-version: [3.10]
+        python-version: [3.9,3.10]
     steps:
       - name: Checkout code 
         uses: actions/checkout@v3
@@ -38,7 +38,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Create virtualenv
-        run: python3.10 -m venv venv  
+        run: python3 -m venv venv  
 
       - name: Activate virtualenv
         run: . venv/bin/activate
