@@ -1,8 +1,8 @@
-name: Continous Integration
+name: Continuous Integration
 
 on:
   push:
-    branches:  
+    branches:
       - main
       - develop
   pull_request:
@@ -16,23 +16,21 @@ env:
   EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
 
 jobs:
-
   test:
     name: Run tests
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout code 
         uses: actions/checkout@v3
 
-      - name: Install dependencies 
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install python3-pip
           pip3 install -r requirements.txt
 
       - name: Create virtualenv
-        run: python3 -m venv venv
+        run: python3 -m venv venv  
 
       - name: Activate virtualenv
         run: . venv/bin/activate
@@ -43,23 +41,20 @@ jobs:
       - name: Run tests
         run: python manage.py test
 
-  assign:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Assign reviewer 
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }} 
-        run: |
-          curl --request POST --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --header "Content-Type: application/json" --data '{"assignees":["reviewer"]}' https://api.github.com/repos/${{ DMTJosue.tricyclebooking }}/issues/${{ env.PR_NUMBER }}/assignees
-
   deploy:
-   if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout code 
         uses: actions/checkout@v3
 
-      - name: Build and deploy
+      - name: Set up Python Anywhere credentials
+        run: |
+          echo "PYTHONANYWHERE_USERNAME=${{ secrets.PYTHONANYWHERE_USERNAME }}" >> $GITHUB_ENV
+          echo "PYTHONANYWHERE_API_KEY=${{ secrets.PYTHONANYWHERE_API_KEY }}" >> $GITHUB_ENV
+
+      - name: Deploy to Python Anywhere
+        if: success()
         run: |
           python deploy.py
