@@ -7,7 +7,7 @@ username = os.environ['PYTHONANYWHERE_USERNAME']
 token = os.environ['PYTHONANYWHERE_API_KEY']
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
-subprocess.run("source myvenv/bin/activate", shell=True)
+subprocess.run("source venv/bin/activate", shell=True)
 
 
 
