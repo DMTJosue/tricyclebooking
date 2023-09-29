@@ -50,20 +50,25 @@ jobs:
         run: python manage.py test
 
   deploy:
-    needs: test
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code 
+      - name: Checkout du code
         uses: actions/checkout@v3
 
-      - name: Set up Python Anywhere credentials
-        run: |
-          echo "PYTHONANYWHERE_USERNAME=${{ secrets.PYTHONANYWHERE_USERNAME }}" >> $GITHUB_ENV
-          echo "PYTHONANYWHERE_API_KEY=${{ secrets.PYTHONANYWHERE_API_KEY }}" >> $GITHUB_ENV
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
 
-      - name: Deploy to Python Anywhere
+      - name: Exécuter les tests
+        run: python manage.py test
+
+      - name: Déployer sur Python Anywhere
         if: success()
-        run: |
-          pythonanywhere-cli login ${{ secrets.PYTHONANYWHERE_USERNAME }} ${{ secrets.PYTHONANYWHERE_API_KEY }}
-          pythonanywhere-cli deploy ${{ secrets.PYTHONANYWHERE_SITE_NAME }}
+        uses: appleboy/ssh-action@master
+        env:
+          USERNAME: ${{ secrets.PYTHONANYWHERE_USERNAME }}
+          API_KEY: ${{ secrets.PYTHONANYWHERE_API_KEY }}
+        with: 
+          host: ${{ secrets.PYTHONANYWHERE_HOST }}
+          script: python deploy.py
