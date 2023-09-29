@@ -43,6 +43,9 @@ jobs:
       - name: Activate virtualenv
         run: . venv/bin/activate
 
+      - name: Install django in virtual env
+        run: . venv/bin/activate
+
       - name: Run migrations
         run: python manage.py migrate
 
