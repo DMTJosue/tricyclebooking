@@ -42,13 +42,19 @@ jobs:
         run: python manage.py test
 
   deploy:
+    needs: test
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout code 
         uses: actions/checkout@v3
 
-      - name: Build and deploy 
+      - name: Set up Python Anywhere credentials
         run: |
-          pip3 install pa_auto
-          pa_auto configure --username=$PYTHONANYWHERE_USERNAME --api-token=$PYTHONANYWHERE_API_KEY
-          pa_auto deploy_webapp --domain=jojodmt.pythonanywhere.com --path=/home/jojodmt/tricyclebooking
+          echo "PYTHONANYWHERE_USERNAME=${{ secrets.PYTHONANYWHERE_USERNAME }}" >> $GITHUB_ENV
+          echo "PYTHONANYWHERE_API_KEY=${{ secrets.PYTHONANYWHERE_API_KEY }}" >> $GITHUB_ENV
+
+      - name: Deploy to Python Anywhere
+        if: success()
+        run: |
+          python deploy.py
